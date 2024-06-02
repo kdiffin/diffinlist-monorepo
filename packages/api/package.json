@@ -1,5 +1,5 @@
 {
-  "name": "@acme/api",
+  "name": "@diffinlist/api",
   "version": "0.1.0",
   "main": "./index.ts",
   "types": "./index.ts",
@@ -10,14 +10,16 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@acme/db": "*",
-    "@trpc/client": "^10.1.0",
-    "@trpc/server": "^10.1.0",
-    "superjson": "^1.9.1",
-    "zod": "^3.18.0"
+    "@diffinlist/db": "link:..\\db",
+    "@trpc/client": "^10.45.2",
+    "@trpc/next": "^10.45.2",
+    "@trpc/react-query": "^10.45.2",
+    "@trpc/server": "^10.45.2",
+    "superjson": "^1.13.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "eslint": "^8.28.0",
-    "typescript": "^4.9.3"
+    "eslint": "^8.57.0",
+    "typescript": "^4.9.5"
   }
 }

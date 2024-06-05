@@ -18,16 +18,20 @@ import { FontSizes } from "@/constants/FontSizes";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/constants/Colors";
 import { ThemedView } from "@/components/ThemedView";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { tokenCache } from "../utils/cache";
+import Constants from "expo-constants";
+import { TRPCProvider } from "../utils/trpc";
+
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
+import { SafeAreaView } from "react-native-safe-area-context";
+import SignInWithOAuth from "@/components/SignInWithOAuth";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const bgColor = useThemeColor(
-    { light: undefined, dark: undefined },
-    "background",
-  );
 
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
@@ -44,42 +48,50 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack
-        screenOptions={{
-          headerStyle: {},
-        }}
-      >
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            title: "Diffinlist",
-            headerTitle: () => <Logo />,
-          }}
-        />
+    <ClerkProvider
+      publishableKey={"pk_test_YmlnLWZsZWEtMzguY2xlcmsuYWNjb3VudHMuZGV2JA"}
+      tokenCache={tokenCache}
+    >
+      <TRPCProvider>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack
+            screenOptions={{
+              headerStyle: {},
+            }}
+          >
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                title: "Diffinlist",
+                headerTitle: () => <Logo />,
+              }}
+            />
 
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </ThemeProvider>
+      </TRPCProvider>
+    </ClerkProvider>
   );
 }
 
 function Logo() {
   return (
-    <ThemedView
+    <View
       style={{
         flexDirection: "row",
-
         display: "flex",
         alignItems: "center",
         gap: 2,
       }}
     >
       <LogoSvg />
-      <ThemedText style={{ fontWeight: "900", ...FontSizes["2xl"] }}>
+      <ThemedText style={{ fontWeight: "800", ...FontSizes["2xl"] }}>
         Diffinlist
       </ThemedText>
-    </ThemedView>
+    </View>
   );
 }
 
